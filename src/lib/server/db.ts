@@ -1,14 +1,13 @@
 // src/lib/server/db.ts
 import pg from 'pg';
-import dotenv from 'dotenv';
 
-// Load environment variables from .env file
-dotenv.config();
+
 
 const { Pool } = pg;
 
 // Ensure DATABASE_URL is set
-const databaseUrl = process.env.DATABASE_URL;
+const databaseUrl = import.meta.env.VITE_DATABASE_URL;
+
 
 if (!databaseUrl) {
     throw new Error('DATABASE_URL is not set in environment variables');
