@@ -66,8 +66,14 @@ export const POST: RequestHandler = async ({ request }) => {
                         console.log(`Successfully processed subscription for (pending confirmation): ${subscriberEmail}`);
                         const successResponse: SubscriptionResponse = { message: 'Please check your email to confirm your subscription!' };
                         return json(successResponse, { status: 200 });
-                    } catch (emailSendError: unknown) {
+                    } catch (emailSendError: Error) { // Assert as Error directly in catch (requires 'strict' false or similar in tsconfig)
                         console.error('Failed to send confirmation email:', emailSendError);
+                        console.error('Error message:', emailSendError.message);
+                        // You might still need a type guard for `response` if it's not on the standard Error interface
+                        const errorWithResponse = emailSendError as any;
+                        if (errorWithResponse.response) {
+                            console.error('SMTP Response:', errorWithResponse.response);
+                        }
                         const successResponse: SubscriptionResponse = { message: 'Subscription saved! Please check your email or contact support if you don\'t receive confirmation.' };
                         return json(successResponse, { status: 200 });
                     }
