@@ -2,7 +2,7 @@ import nodemailer from 'nodemailer';
 
 // Keep your original environment variable access
 if (!import.meta.env.VITE_SMTP_USERNAME || !import.meta.env.VITE_SMTP_PASSWORD) {
-    console.error('SMTP credentials are not set. Email sending will fail');
+    console.error('SMTP credentials are not set. Email sending will fail.');
 }
 
 const transporter = nodemailer.createTransport({
