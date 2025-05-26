@@ -4,7 +4,16 @@
 	"compatibility_date": "2025-05-25",
 	"pages_build_output_dir": ".svelte-kit/cloudflare",
 	"observability": {
-		"enabled": true
+		"enabled": true,
+		"head_sampling_rate": 1
+	},
+	"env": {
+		"staging": {
+			"observability": {
+				"enabled": true,
+				"head_sampling_rate": 1
+			}
+		}
 	},
 	"compatibility_flags": ["nodejs_compat"]
 }
