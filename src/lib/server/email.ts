@@ -1,46 +1,19 @@
-// ===================================================================
-// src/lib/server/email.ts - UPDATED WITH BETTER ERROR HANDLING
-// ===================================================================
+// src/lib/server/email.ts
 
 import nodemailer from 'nodemailer';
-import {
-    VITE_SMTP_HOST,
-    VITE_SMTP_PORT,
-    VITE_SMTP_USERNAME,
-    VITE_SMTP_PASSWORD,
-    VITE_BASE_URL
-} from '$env/static/private';
 
-// Validate environment variables at startup
-console.log('[Email Service] Checking environment variables...');
-const requiredEnvVars = {
-    VITE_SMTP_HOST,
-    VITE_SMTP_PORT,
-    VITE_SMTP_USERNAME,
-    VITE_SMTP_PASSWORD,
-    VITE_BASE_URL
-};
-
-for (const [key, value] of Object.entries(requiredEnvVars)) {
-    if (!value) {
-        console.error(`[Email Service] Missing required environment variable: ${key}`);
-    } else {
-        console.log(`[Email Service] ✓ ${key} is configured`);
-    }
-}
-
-if (!VITE_SMTP_USERNAME || !VITE_SMTP_PASSWORD) {
+if (!import.meta.env.VITE_SMTP_USERNAME || !import.meta.env.VITE_SMTP_PASSWORD) {
     console.error('[Email Service] SMTP credentials not configured. Email sending will fail.');
 }
 
 // Create transporter with better configuration
 const transporter = nodemailer.createTransport({
-    host: VITE_SMTP_HOST,
-    port: parseInt(VITE_SMTP_PORT || '587'),
-    secure: parseInt(VITE_SMTP_PORT || '587') === 465, // true for 465, false for other ports
+    host: import.meta.env.VITE_SMTP_HOST,
+    port: parseInt(import.meta.env.VITE_SMTP_PORT || '587'),
+    secure: parseInt(import.meta.env.VITE_SMTP_PORT || '587') === 465, // true for 465, false for other ports
     auth: {
-        user: VITE_SMTP_USERNAME,
-        pass: VITE_SMTP_PASSWORD,
+        user: import.meta.env.VITE_SMTP_USERNAME,
+        pass: import.meta.env.VITE_SMTP_PASSWORD,
     },
     logger: true,
     debug: true,
@@ -59,24 +32,24 @@ transporter.verify((error: any) => {
     }
 });
 
-const FROM_EMAIL = VITE_SMTP_USERNAME;
+const FROM_EMAIL = import.meta.env.VITE_SMTP_USERNAME;
 
 export async function sendConfirmationEmail({ to, token }: { to: string; token: string }) {
     console.log(`[Email Service] Starting email send process for: ${to}`);
 
     // Check if email service is configured
-    if (!VITE_SMTP_USERNAME || !VITE_SMTP_PASSWORD) {
+    if (!import.meta.env.VITE_SMTP_USERNAME || !import.meta.env.VITE_SMTP_PASSWORD) {
         console.error('[Email Service] Email credentials not configured');
         throw new Error('Email service not configured - missing SMTP credentials');
     }
 
-    if (!VITE_BASE_URL) {
+    if (!import.meta.env.VITE_BASE_URL) {
         console.error('[Email Service] Base URL not configured');
         throw new Error('Email service not configured - missing base URL');
     }
 
     // Construct confirmation link
-    const confirmationLink = `${VITE_BASE_URL}/confirm-subscription?token=${token}`;
+    const confirmationLink = `${import.meta.env.VITE_BASE_URL}/confirm-subscription?token=${token}`;
     console.log(`[Email Service] Confirmation link: ${confirmationLink}`);
 
     // Email content
