@@ -8,7 +8,7 @@ if (!import.meta.env.VITE_SMTP_USERNAME || !import.meta.env.VITE_SMTP_PASSWORD) 
 const transporter = nodemailer.createTransport({
     host: import.meta.env.VITE_SMTP_HOST,
     port: import.meta.env.VITE_SMTP_PORT,
-    secure: false,
+    secure: true,
     auth: {
         user: import.meta.env.VITE_SMTP_USERNAME,
         pass: import.meta.env.VITE_SMTP_PASSWORD,
