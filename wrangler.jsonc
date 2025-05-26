@@ -1,19 +1,20 @@
+// wrangler.toml (at the root of your project)
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "mailing-list-app",
-	"compatibility_date": "2025-05-25",
+	"compatibility_date": "2025-05-26",
 	"pages_build_output_dir": ".svelte-kit/cloudflare",
-	"observability": {
-		"enabled": true,
-		"head_sampling_rate": 1
+	"compatibility_flags": ["nodejs_compat"],
+	"vars": {
+		"BASE_URL": "https://mailing-list.pages.dev",
+		"SMTP_HOST": "smtp.email.com",
+		"SMTP_PORT": "465"
 	},
 	"env": {
-		"staging": {
-			"observability": {
-				"enabled": true,
-				"head_sampling_rate": 1
+		"preview": {
+			"vars": {
+				"BASE_URL": "https://mailing-list.pages.dev"
 			}
 		}
-	},
-	"compatibility_flags": ["nodejs_compat"]
+	}
 }
