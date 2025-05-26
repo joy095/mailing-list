@@ -2,7 +2,8 @@
 import nodemailer from 'nodemailer';
 
 if (!import.meta.env.VITE_SMTP_USERNAME || !import.meta.env.VITE_SMTP_PASSWORD) {
-    console.error('GMAIL_USER or GMAIL_APP_PASSWORD environment variables are not set. Email sending will fail.');
+    console.error('Email sending skipped: Gmail credentials not configured.');
+    throw new Error('Email service not configured.');
 }
 
 const transporter = nodemailer.createTransport({
