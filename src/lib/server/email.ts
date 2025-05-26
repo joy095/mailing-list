@@ -1,4 +1,3 @@
-// src/lib/server/email.ts
 import nodemailer from 'nodemailer';
 
 // Keep your original environment variable access
